@@ -12,17 +12,17 @@ Les principaux fichiers générés par les scripts sont :
 
 Les tests ont été réalisés sur un ordinateur utilisant Linux sous WSL2 (Windows Subsystem for Linux 2). Voici les caractéristiques relevées dans le terminal :
 
-Processeur --> AMD Ryzen 7 6800HS Creator Edition 
-Architecture --> x86-64 
-Nombre de cœurs physiques annoncés --> 8 
-Processeurs logiques visibles dans WSL2 --> 16 
-Threads par cœur --> 2 
-Mémoire totale visible dans WSL2 --> 6,6 Gio 
-Mémoire disponible au moment de la vérification -->  4,5 Gio 
-Mémoire swap --> 2 Gio 
-Système d'exploitation --> Linux sous WSL2 
-Version du noyau Linux --> 6.18.54.1-microsoft-standard-WSL2 
-Compilateur C --> GCC 16.2.0 (Debian) 
+- Processeur --> AMD Ryzen 7 6800HS Creator Edition 
+- Architecture --> x86-64 
+- Nombre de cœurs physiques annoncés --> 8 
+- Processeurs logiques visibles dans WSL2 --> 16 
+- Threads par cœur --> 2 
+- Mémoire totale visible dans WSL2 --> 6,6 Gio 
+- Mémoire disponible au moment de la vérification -->  4,5 Gio 
+- Mémoire swap --> 2 Gio 
+- Système d'exploitation --> Linux sous WSL2 
+- Version du noyau Linux --> 6.18.54.1-microsoft-standard-WSL2 
+- Compilateur C --> GCC 16.2.0 (Debian) 
 
 Le programme est compilé avec les options `-O2`, `-Wall` et `-g`, d'après le script de benchmark utilisé.
 
