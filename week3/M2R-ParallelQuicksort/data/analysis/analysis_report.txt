@@ -1,0 +1,213 @@
+====================================================
+  PARALLEL QUICKSORT - RAPPORT STATISTIQUE
+====================================================
+
+Fichier analysé : data/benchmark_20261026_010407.csv 
+Nombre de mesures : 80 
+Nombre de répétitions distinctes : 10 
+IC à 95 % estimé par bootstrap, 5000 rééchantillonnages.
+
+----------------------------------------------------
+1. TEMPS D'EXECUTION (secondes)
+----------------------------------------------------
+IC 95 % : intervalle de confiance de la médiane.
+
+Taille du tableau : 10000 
+
+Séquentiel
+  Médiane       : 0.000714 s
+  IC 95 %       : [0.000667 ; 0.000811] s
+  Moyenne       : 0.000743 s
+  Écart-type    : 0.000107 s
+
+Parallèle
+  Médiane       : 0.096774 s
+  IC 95 %       : [0.083987 ; 0.110428] s
+  Moyenne       : 0.096848 s
+  Écart-type    : 0.014532 s
+
+qsort (libc)
+  Médiane       : 0.001185 s
+  IC 95 %       : [0.001089 ; 0.001259] s
+  Moyenne       : 0.001191 s
+  Écart-type    : 0.000159 s
+
+Taille du tableau : 100000 
+
+Séquentiel
+  Médiane       : 0.009140 s
+  IC 95 %       : [0.008494 ; 0.009586] s
+  Moyenne       : 0.009270 s
+  Écart-type    : 0.001364 s
+
+Parallèle
+  Médiane       : 0.129976 s
+  IC 95 %       : [0.117426 ; 0.135737] s
+  Moyenne       : 0.125038 s
+  Écart-type    : 0.017598 s
+
+qsort (libc)
+  Médiane       : 0.013254 s
+  IC 95 %       : [0.012497 ; 0.015512] s
+  Moyenne       : 0.013749 s
+  Écart-type    : 0.001804 s
+
+Taille du tableau : 500000 
+
+Séquentiel
+  Médiane       : 0.048798 s
+  IC 95 %       : [0.046539 ; 0.052349] s
+  Moyenne       : 0.049581 s
+  Écart-type    : 0.004065 s
+
+Parallèle
+  Médiane       : 0.142515 s
+  IC 95 %       : [0.137481 ; 0.161733] s
+  Moyenne       : 0.144511 s
+  Écart-type    : 0.026139 s
+
+qsort (libc)
+  Médiane       : 0.070550 s
+  IC 95 %       : [0.066893 ; 0.078857] s
+  Moyenne       : 0.074041 s
+  Écart-type    : 0.010660 s
+
+Taille du tableau : 1000000 
+
+Séquentiel
+  Médiane       : 0.103800 s
+  IC 95 %       : [0.095104 ; 0.119638] s
+  Moyenne       : 0.108632 s
+  Écart-type    : 0.019653 s
+
+Parallèle
+  Médiane       : 0.209007 s
+  IC 95 %       : [0.199308 ; 0.216397] s
+  Moyenne       : 0.209022 s
+  Écart-type    : 0.015702 s
+
+qsort (libc)
+  Médiane       : 0.144645 s
+  IC 95 %       : [0.139637 ; 0.161970] s
+  Moyenne       : 0.148009 s
+  Écart-type    : 0.013930 s
+
+Taille du tableau : 5000000 
+
+Séquentiel
+  Médiane       : 0.515013 s
+  IC 95 %       : [0.480197 ; 0.559098] s
+  Moyenne       : 0.522820 s
+  Écart-type    : 0.045327 s
+
+Parallèle
+  Médiane       : 0.820813 s
+  IC 95 %       : [0.792885 ; 0.878780] s
+  Moyenne       : 0.828606 s
+  Écart-type    : 0.042907 s
+
+qsort (libc)
+  Médiane       : 0.816285 s
+  IC 95 %       : [0.773176 ; 0.881756] s
+  Moyenne       : 0.824462 s
+  Écart-type    : 0.084628 s
+
+Taille du tableau : 10000000 
+
+Séquentiel
+  Médiane       : 1.161795 s
+  IC 95 %       : [1.082869 ; 1.275409] s
+  Moyenne       : 1.178675 s
+  Écart-type    : 0.115965 s
+
+Parallèle
+  Médiane       : 1.596187 s
+  IC 95 %       : [1.529182 ; 1.683643] s
+  Moyenne       : 1.609955 s
+  Écart-type    : 0.089093 s
+
+qsort (libc)
+  Médiane       : 1.721623 s
+  IC 95 %       : [1.582878 ; 1.850727] s
+  Moyenne       : 1.729132 s
+  Écart-type    : 0.180220 s
+
+Taille du tableau : 20000000 
+
+Séquentiel
+  Médiane       : 2.344885 s
+  IC 95 %       : [2.288361 ; 2.568896] s
+  Moyenne       : 2.380822 s
+  Écart-type    : 0.176835 s
+
+Parallèle
+  Médiane       : 3.078677 s
+  IC 95 %       : [2.992097 ; 3.146002] s
+  Moyenne       : 3.108738 s
+  Écart-type    : 0.228897 s
+
+qsort (libc)
+  Médiane       : 3.419166 s
+  IC 95 %       : [3.213113 ; 3.588173] s
+  Moyenne       : 3.426609 s
+  Écart-type    : 0.278676 s
+
+Taille du tableau : 50000000 
+
+Séquentiel
+  Médiane       : 5.904688 s
+  IC 95 %       : [5.711881 ; 6.080792] s
+  Moyenne       : 5.927548 s
+  Écart-type    : 0.279146 s
+
+Parallèle
+  Médiane       : 7.403154 s
+  IC 95 %       : [7.180449 ; 7.486314] s
+  Moyenne       : 7.331472 s
+  Écart-type    : 0.211863 s
+
+qsort (libc)
+  Médiane       : 8.842627 s
+  IC 95 %       : [8.735820 ; 9.341193] s
+  Moyenne       : 8.979543 s
+  Écart-type    : 0.616706 s
+
+----------------------------------------------------
+2. SPEEDUP DU TRI PARALLELE
+----------------------------------------------------
+Speedup = temps séquentiel / temps parallèle.
+Speedup > 1 : parallèle plus rapide.
+Speedup < 1 : parallèle plus lent.
+
+Taille du tableau : 10000 
+  Speedup médian : 0.0079
+  IC 95 %        : [0.0072 ; 0.0083]
+
+Taille du tableau : 100000 
+  Speedup médian : 0.0690
+  IC 95 %        : [0.0643 ; 0.0911]
+
+Taille du tableau : 500000 
+  Speedup médian : 0.3280
+  IC 95 %        : [0.3140 ; 0.3462]
+
+Taille du tableau : 1000000 
+  Speedup médian : 0.5098
+  IC 95 %        : [0.4721 ; 0.5570]
+
+Taille du tableau : 5000000 
+  Speedup médian : 0.6180
+  IC 95 %        : [0.5980 ; 0.6701]
+
+Taille du tableau : 10000000 
+  Speedup médian : 0.7471
+  IC 95 %        : [0.6923 ; 0.7686]
+
+Taille du tableau : 20000000 
+  Speedup médian : 0.7504
+  IC 95 %        : [0.7201 ; 0.8200]
+
+Taille du tableau : 50000000 
+  Speedup médian : 0.8062
+  IC 95 %        : [0.7881 ; 0.8350]
+
