@@ -50,7 +50,7 @@ Remplacer le nom du fichier par celui du benchmark obtenu :
 
 Le rapport est enregistré dans data/analysis/analysis_report.txt. Il contient les médianes, les moyennes, les écarts-types et les intervalles de confiance bootstrap à 95 %.
 
-5. Analyse des résultats
+### 3.2. Analyse des résultats
 
 Le tri séquentiel reste le plus rapide et obtient le meilleur temps médian pour toutes les tailles testées.
 
@@ -76,7 +76,7 @@ Les 10 répétitions par taille donnent une meilleure base de comparaison que le
 
 Ces intervalles indiquent l'incertitude autour de la médiane estimée ; ils ne représentent pas la plage contenant 95 % des mesures individuelles. Les résultats restent liés à cette machine, à WSL2 et aux implémentations testées.
 
-## 6. Conclusion
+## Conclusion
 
 Dans cette expérience, le tri séquentiel reste le plus rapide pour toutes les tailles testées, jusqu'à 50 millions d'éléments. Le tri parallèle devient plus compétitif lorsque les tableaux grandissent et dépasse qsort pour les plus grandes tailles, mais il ne dépasse pas le séquentiel.
 
