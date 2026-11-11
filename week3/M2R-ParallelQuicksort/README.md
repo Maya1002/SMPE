@@ -118,27 +118,7 @@ Pour 50 millions d'éléments, le speedup médian de **1,221** correspond à une
 
 À l'inverse, les intervalles de confiance des tailles 10 000 et 100 000 restent entièrement inférieurs à `1`. Le parallélisme n'est donc pas avantageux pour ces tailles.
 
-## 7. Comparaison avec `qsort`
-
-Le benchmark permet également de comparer notre implémentation parallèle à `qsort`, la fonction de tri fournie par la bibliothèque standard C.
-
-![Comparaison des temps d'exécution](data/analysis/execution_times_thread_levels.png)
-
-*Figure 4 - Comparaison des temps d'exécution des différentes méthodes.*
-
-Pour les grandes tailles, le tri parallèle devient compétitif face à `qsort` et peut être plus rapide selon la configuration utilisée. Cette comparaison doit cependant être interprétée dans le contexte de notre environnement expérimental : les performances de `qsort` dépendent notamment de l'implémentation de la bibliothèque C, du compilateur, de l'architecture et des options de compilation.
-
-L'objectif principal de cette expérience reste donc la comparaison entre notre version séquentielle et notre version parallèle, tandis que `qsort` constitue une référence supplémentaire.
-
-## 8. Fiabilité des mesures
-
-Les résultats sont basés sur **10 répétitions par configuration**, ce qui permet d'obtenir une estimation plus robuste que les premiers essais réalisés avec moins de répétitions.
-
-Les intervalles de confiance à 95 % indiquent la précision de la médiane calculée à partir des mesures. Ils permettent d’estimer l’incertitude liée aux résultats obtenus.
-
-Les résultats restent néanmoins dépendants de la machine utilisée, de WSL2, de la charge du système et des choix d'implémentation.
-
-## 9. Conclusion
+## 7. Conclusion
 
 L'expérience montre que le parallélisme n'est intéressant que lorsque la quantité de travail est suffisamment importante pour amortir son coût de gestion.
 
