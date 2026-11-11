@@ -69,7 +69,7 @@ for rep in $(seq 1 "$REPS"); do
 
         done
 
-    done < <(shuf -e "${SIZES[@]}")
+    done < <(printf '%s\n' "${SIZES[@]}")
 done
 
 echo "=================================================="
