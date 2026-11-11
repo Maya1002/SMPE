@@ -72,15 +72,16 @@ La comparaison montre donc qu'il existe un compromis entre la quantité de trava
 
 Les résultats montrent que le meilleur niveau dépend de la taille du tableau. Pour les petites tailles, `THREAD_LEVEL = 1` est préférable, tandis que `THREAD_LEVEL = 2` devient le meilleur choix à partir de 500 000 éléments.
 
-| Taille     | Meilleur `THREAD_LEVEL`|Speedup|
-| 10 000     |      1                 | 0,584 |
-| 100 000    |      1                 | 0,940 |
-| 500 000    |      2                 | 1,064 |
-| 1 000 000  |      2                 | 1,077 |
-| 5 000 000  |      2                 | 1,114 |
-| 10 000 000 |      2                 | 1,172 |
-| 20 000 000 |      2                 | 1,154 |
-| 50 000 000 |      2                 | 1,221 |
+| Taille      | Meilleur `THREAD_LEVEL` | Speedup |
+|:------------|:-----------------------:|--------:|
+| 10 000      | 1                       | 0,584   |
+| 100 000     | 1                       | 0,940   |
+| 500 000     | 2                       | 1,064   |
+| 1 000 000   | 2                       | 1,077   |
+| 5 000 000   | 2                       | 1,114   |
+| 10 000 000  | 2                       | 1,172   |
+| 20 000 000  | 2                       | 1,154   |
+| 50 000 000  | 2                       | 1,221   |
 
 Cette évolution s'explique par le compromis entre **parallélisme exploitable** et **coût de gestion**. Pour un petit tableau, multiplier les tâches apporte peu de bénéfice. Pour un grand tableau, le travail disponible est suffisamment important pour amortir cet overhead.
 
@@ -105,12 +106,13 @@ Pour 10 000 éléments, le meilleur speedup est seulement de **0,584** avec `THR
 Le meilleur résultat est obtenu pour 50 millions d'éléments :
 
 | Taille     | `THREAD_LEVEL` | Speedup médian | IC 95 % |
+|:-----------|:--------------:|---------------:|:-------:|
 | 500 000    | 2              | 1,064          | [1,009 ; 1,094] |
 | 1 000 000  | 2              | 1,077          | [1,056 ; 1,105] |
 | 5 000 000  | 2              | 1,114          | [1,082 ; 1,149] |
 | 10 000 000 | 2              | 1,172          | [1,119 ; 1,232] |
 | 20 000 000 | 2              | 1,154          | [1,107 ; 1,203] |
-| 50 000 000 | 2              | 1,221          | [1,157 ; 1,311] |
+| 50 000 000 | 2              | **1,221**      | **[1,157 ; 1,311]** |
 
 Pour 50 millions d'éléments, le speedup médian de **1,221** correspond à une accélération d'environ **22 %** par rapport au tri séquentiel. L'intervalle de confiance est entièrement supérieur à `1`, ce qui va dans le sens d'un gain réel dans cette configuration.
 
