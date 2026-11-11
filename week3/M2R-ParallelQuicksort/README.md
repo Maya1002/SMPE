@@ -60,11 +60,11 @@ Le script calcule les moyennes, les écarts-types, les intervalles de confiance 
 
 *Figure 1 - Temps d'exécution du tri séquentiel, du tri parallèle et de `qsort`.*
 
-Le temps d'exécution augmente naturellement avec la taille du tableau. Pour les petites tailles, les différentes méthodes restent relativement proches : le travail à effectuer est faible et le coût de gestion du parallélisme devient proportionnellement important.
+Le temps d'exécution augmente avec la taille du tableau. Pour les petites tailles, le tri parallèle n'a pas vraiment le temps de compenser le coût lié à la création et à la gestion des threads.
 
-Lorsque la taille augmente, l'intérêt du parallélisme devient plus visible. Le niveau de récursion joue cependant un rôle important : augmenter `THREAD_LEVEL` ne garantit pas une meilleure performance. Un niveau trop élevé peut générer davantage de tâches que nécessaire et augmenter le coût de création, de synchronisation et de gestion des threads.
+Lorsque la taille augmente, le parallélisme devient plus intéressant. Cependant, augmenter THREAD_LEVEL ne donne pas forcément de meilleurs temps. Avec un niveau élevé, davantage de threads sont créés, ce qui peut augmenter le temps consacré à leur gestion.
 
-La comparaison montre donc qu'il existe un compromis entre la quantité de travail parallèle et l'overhead introduit par celui-ci.
+Il faut donc trouver un niveau de récursion qui apporte suffisamment de parallélisme sans créer trop d'overhead.
 
 ## 5. Influence de `THREAD_LEVEL`
 
@@ -85,9 +85,9 @@ Les résultats montrent que le meilleur niveau dépend de la taille du tableau. 
 | 20 000 000  | 2                       | 1,162         |
 | 50 000 000  | 2                       | 1,230         |
 
-Pour 100 000 éléments, `THREAD_LEVEL = 0` est sélectionné. Ce niveau correspond au cas séquentiel, ce qui montre que le parallélisme n'apporte pas encore de gain suffisamment important pour cette taille.
+Pour 100 000 éléments, THREAD_LEVEL = 0 donne le meilleur résultat parmi les niveaux testés. Cela correspond au cas séquentiel et montre que le parallélisme n'apporte pas de gain pour cette taille.
 
-Cette évolution s'explique par le compromis entre **parallélisme exploitable** et **coût de gestion**. Pour un petit tableau, multiplier les tâches apporte peu de bénéfice. Pour un grand tableau, le travail disponible est suffisamment important pour amortir cet overhead.
+Pour les petits tableaux, le travail à effectuer est trop faible pour que la création de plusieurs threads soit intéressante. Pour les grandes tailles, le temps de calcul devient suffisamment important pour compenser ce coût.
 
 ## 6. Speedup
 
@@ -100,8 +100,7 @@ Le speedup est calculé par :
 ```text
 speedup = temps séquentiel / temps parallèle
 ```
-
-La valeur `1` correspond donc à une performance identique entre les deux méthodes. Une valeur supérieure à `1` indique une accélération du tri parallèle, tandis qu'une valeur inférieure à `1` indique que le tri parallèle est plus lent.
+Un speedup égal à 1 signifie que les deux méthodes ont le même temps d'exécution. Au-dessus de 1, le tri parallèle est plus rapide ; en dessous de 1, il est plus lent.
 
 Les meilleurs résultats obtenus pour chaque taille sont :
 
@@ -122,9 +121,9 @@ Pour 10 000 éléments, le meilleur speedup moyen est seulement de **0,568** ave
 
 À partir de 500 000 éléments, le meilleur speedup devient supérieur à `1`. Pour 500 000 éléments, le speedup moyen atteint **1,055** avec `THREAD_LEVEL = 2`. L'intervalle de confiance `[1,018 ; 1,091]` est entièrement supérieur à `1`, ce qui indique un gain en faveur du tri parallèle dans cette configuration.
 
-Pour 1 million d'éléments, le speedup moyen atteint **1,081** avec `THREAD_LEVEL = 1`. Le gain reste faible, mais l'intervalle de confiance `[1,001 ; 1,161]` est légèrement supérieur à `1`.
+Pour 1 million d'éléments, le speedup moyen est de 1,081 avec THREAD_LEVEL = 1. Le gain reste faible : la borne inférieure de l'intervalle de confiance est seulement légèrement supérieure à 1.
 
-Pour les tailles plus importantes, `THREAD_LEVEL = 2` devient systématiquement le meilleur niveau testé. Le speedup atteint **1,176** pour 10 millions d'éléments et **1,162** pour 20 millions d'éléments.
+Pour les tailles de 5 à 50 millions d'éléments, THREAD_LEVEL = 2 est le meilleur niveau testé. Le speedup atteint **1,176** pour 10 millions d'éléments et **1,162** pour 20 millions d'éléments.
 
 Le meilleur résultat est obtenu pour 50 millions d'éléments :
 
@@ -138,12 +137,10 @@ Globalement, les résultats montrent donc que le parallélisme devient réelleme
 
 ## 7. Conclusion
 
-L'expérience montre que le parallélisme n'est intéressant que lorsque la quantité de travail est suffisamment importante pour amortir son coût de gestion.
+Les résultats montrent que le tri parallèle n'est pas intéressant pour les petites tailles, mais qu'il devient plus efficace lorsque la taille du tableau augmente.
 
 Pour **10 000 éléments**, le tri parallèle est nettement moins performant que le tri séquentiel. Pour **100 000 éléments**, le meilleur niveau testé est `THREAD_LEVEL = 0`, correspondant au traitement séquentiel, et l'intervalle de confiance du speedup contient `1`.
 
-À partir de **500 000 éléments**, le parallélisme devient avantageux. Le niveau `THREAD_LEVEL = 2` donne généralement les meilleurs résultats pour les grandes tailles, avec un speedup moyen atteignant **1,230** pour 50 millions d'éléments.
+À partir de 500 000 éléments, le parallélisme devient avantageux. THREAD_LEVEL = 2 donne les meilleurs résultats pour les grandes tailles, avec un speedup moyen atteignant 1,230 pour 50 millions d'éléments.
 
-Ces résultats montrent qu'augmenter le nombre de niveaux de récursion n'améliore pas systématiquement les performances. Un niveau trop élevé peut augmenter l'overhead sans fournir suffisamment de travail supplémentaire pour compenser ce coût.
-
-Le choix du `THREAD_LEVEL` doit donc être adapté à la taille du problème. Dans les configurations testées, **`THREAD_LEVEL = 2` constitue le meilleur compromis pour les grandes tailles**, tandis que le parallélisme est peu ou pas intéressant pour les petits tableaux.
+Augmenter THREAD_LEVEL n'améliore donc pas forcément les performances. Dans nos tests, le meilleur niveau dépend de la taille du tableau et les niveaux élevés ne donnent pas systématiquement de meilleurs résultats.
