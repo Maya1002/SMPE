@@ -11,6 +11,30 @@ Pour le tri parallèle, plusieurs niveaux de récursion ont été testés :
 ```text
 THREAD_LEVEL = 0, 1, 2, 4, 6, 8, 10
 ```
+### Démarche expérimentale
+
+Pour chaque taille de tableau et chaque `THREAD_LEVEL`, le benchmark est exécuté plusieurs fois. Les temps obtenus sont ensuite regroupés par configuration afin de calculer la moyenne et l'écart-type.
+
+À partir de ces répétitions, un intervalle de confiance à 95 % est calculé avec :
+
+```text
+IC 95 % = moyenne ± 1,96 × écart-type / √n
+```
+où `n` correspond au nombre de répétitions.
+
+Le coefficient 1,96 correspond au niveau de confiance de 95 %. n correspond au nombre de répétitions. ( P (-1,96 < Z < 1,96) )
+
+Details de calcul : On veut un intervalle central de 95 %
+
+soit : P (-z < Z < +z )  = 0,95 implique qu'il reste : P( Z < -z ) + P( Z > z ) = 0,05
+        1-0,95 = 0,05 => 0,05/2 = 0,025 ( car par symétrie P( Z < -z ) = P( Z > z ) )
+
+On cherche z tel que : P(Z < -z) = 0,025
+Par symétrie de la loi normale : P(Z > z) = 0,025
+Donc : P(Z < z) = 1 - 0,025 = 0,975
+Avec la table de la loi normale, on trouve : z = fct_de_repartition(0,975) ≈ 1,96
+
+Le speedup est ensuite calculé entre le temps séquentiel et le temps parallèle. Pour chaque taille de tableau, le `THREAD_LEVEL` donnant le meilleur speedup moyen est retenu. Les résultats sont enfin représentés sous forme de graphiques et de tableaux.
 
 ## 2. Fichiers ajoutés
 
@@ -21,7 +45,7 @@ THREAD_LEVEL = 0, 1, 2, 4, 6, 8, 10
 
 ### Analyse statistique
 
-- `scripts/analyse_benchmark.R`: calcule les moyennes, les écarts-types, les intervalles de confiance à 95 %, les speedups et le meilleur `THREAD_LEVEL`.
+- `scripts/analyse_benchmark.R`: calcule les moyennes, les écarts-types, les speedups et le meilleur THREAD_LEVEL.
 - `data/benchmark_*.csv` : contient les mesures brutes produites par les benchmarks.
 - `data/analysis/statistiques_thread_level.csv` : contient les statistiques calculées pour chaque taille et chaque `THREAD_LEVEL`.
 - `data/analysis/best_thread_level.csv` : contient le meilleur `THREAD_LEVEL` identifié pour chaque taille.
@@ -55,7 +79,7 @@ Le script calcule les moyennes, les écarts-types, les intervalles de confiance 
 
 *Figure 2 - Temps d'exécution du tri parallèle pour les différents niveaux de `THREAD_LEVEL`.*
 
-Les résultats montrent que le meilleur niveau dépend de la taille du tableau. Pour les petites tailles, un faible niveau de récursion est préférable. À partir de 500 000 éléments, `THREAD_LEVEL = 2` devient généralement le meilleur choix.
+Le meilleur niveau dépend de la taille du tableau. `THREAD_LEVEL = 2` donne les meilleurs résultats pour 500 000 éléments puis pour les tailles de 5 à 50 millions d'éléments.
 
 | Taille      | Meilleur `THREAD_LEVEL` | Speedup moyen |
 |:------------|:-----------------------:|--------------:|
@@ -89,20 +113,20 @@ Les meilleurs résultats obtenus pour chaque taille sont :
 
 | Taille      | `THREAD_LEVEL` | Speedup moyen | IC 95 % |
 |:------------|:--------------:|--------------:|:-------:|
-| 10 000      | 1              | 0,568         | [0,470 ; 0,666] |
-| 100 000     | 0              | 0,954         | [0,901 ; 1,008] |
-| 500 000     | 2              | 1,055         | [1,018 ; 1,091] |
-| 1 000 000   | 1              | 1,081         | [1,001 ; 1,161] |
-| 5 000 000   | 2              | 1,117         | [1,078 ; 1,156] |
-| 10 000 000  | 2              | 1,176         | [1,107 ; 1,246] |
-| 20 000 000  | 2              | 1,162         | [1,104 ; 1,219] |
-| 50 000 000  | 2              | **1,230**     | **[1,169 ; 1,292]** |
+| 10 000      | 1              | 0,568         | [0,483 ; 0,653]|
+| 100 000     | 0              | 0,954         | [0,908 ; 1,000] |
+| 500 000     | 2              | 1,055         | [1,023 ; 1,087] |
+| 1 000 000   | 1              | 1,081         | [1,011 ; 1,150] |
+| 5 000 000   | 2              | 1,117         | [1,083 ; 1,151] |
+| 10 000 000  | 2              | 1,176         | [1,116 ; 1,237] |
+| 20 000 000  | 2              | 1,162         | [1,112 ; 1,212] |
+| 50 000 000  | 2              | **1,230**     |**[1,177 ; 1,283]** |
 
 Pour 10 000 éléments, le meilleur speedup moyen est seulement de **0,568** avec `THREAD_LEVEL = 1`. Le parallélisme est donc clairement défavorable pour cette taille.
 
-À 100 000 éléments, le meilleur niveau testé est `THREAD_LEVEL = 0`, avec un speedup moyen de **0,954**. L'intervalle de confiance contient `1`, ce qui signifie qu'il n'y a pas de gain statistiquement clair par rapport au tri séquentiel.
+À 100 000 éléments, le meilleur niveau testé est `THREAD_LEVEL = 0`, avec un speedup moyen de **0,954**. L'intervalle de confiance est très proche de `1`, ce qui ne permet pas de mettre en évidence un gain clair du tri parallèle dans cette configuration.
 
-À partir de 500 000 éléments, le meilleur speedup devient supérieur à `1`. Pour 500 000 éléments, le speedup moyen atteint **1,055** avec `THREAD_LEVEL = 2`. L'intervalle de confiance `[1,018 ; 1,091]` est entièrement supérieur à `1`, ce qui indique un gain en faveur du tri parallèle dans cette configuration.
+À partir de 500 000 éléments, le meilleur speedup devient supérieur à `1`. Pour 500 000 éléments, le speedup moyen atteint **1,055** avec `THREAD_LEVEL = 2`. L'intervalle de confiance `[1,023 ; 1,087]` est entièrement supérieur à `1`, ce qui indique un gain en faveur du tri parallèle dans cette configuration.
 
 Pour 1 million d'éléments, le speedup moyen est de 1,081 avec THREAD_LEVEL = 1. Le gain reste faible : la borne inférieure de l'intervalle de confiance est seulement légèrement supérieure à 1.
 
@@ -111,7 +135,7 @@ Pour les tailles de 5 à 50 millions d'éléments, THREAD_LEVEL = 2 est le meill
 Le meilleur résultat est obtenu pour 50 millions d'éléments :
 
 - **Speedup moyen : 1,230**
-- **IC 95 % : [1,169 ; 1,292]**
+- **IC 95 % : [1,177 ; 1,283]**
 - **THREAD_LEVEL : 2**
 
 Pour 50 millions d'éléments, le speedup moyen de **1,230** correspond à une accélération d'environ **23 %** par rapport au tri séquentiel. L'intervalle de confiance est entièrement supérieur à `1`, ce qui confirme que le gain observé est compatible avec une accélération du tri parallèle dans cette configuration.
@@ -122,7 +146,7 @@ Globalement, les résultats montrent donc que le parallélisme devient réelleme
 
 Les résultats montrent que le tri parallèle n'est pas intéressant pour les petites tailles, mais qu'il devient plus efficace lorsque la taille du tableau augmente.
 
-Pour **10 000 éléments**, le tri parallèle est nettement moins performant que le tri séquentiel. Pour **100 000 éléments**, le meilleur niveau testé est `THREAD_LEVEL = 0`, correspondant au traitement séquentiel, et l'intervalle de confiance du speedup contient `1`.
+Pour **10 000 éléments**, le tri parallèle est nettement moins performant que le tri séquentiel. Pour 100 000 éléments, le meilleur niveau testé est THREAD_LEVEL = 0, avec un speedup moyen de 0,954. L'intervalle de confiance est très proche de 1, ce qui ne permet pas de mettre en évidence un gain clair du tri parallèle dans cette configuration.
 
 À partir de 500 000 éléments, le parallélisme devient avantageux. THREAD_LEVEL = 2 donne les meilleurs résultats pour les grandes tailles, avec un speedup moyen atteignant 1,230 pour 50 millions d'éléments.
 

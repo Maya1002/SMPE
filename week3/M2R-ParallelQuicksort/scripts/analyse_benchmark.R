@@ -1,12 +1,15 @@
 #!/usr/bin/env Rscript
 library(ggplot2)
 
+#!/usr/bin/env Rscript
+library(ggplot2)
+
 # 95% confidence interval for the mean
 mean_ci <- function(x) {
   n <- length(x)
   mean_x <- mean(x)
   sd_x <- sd(x)
-  error <- qt(0.975, df = n - 1) * sd_x / sqrt(n)
+  error <- 1.96 * sd_x / sqrt(n)
   c(low = mean_x - error, high = mean_x + error)
 }
 
