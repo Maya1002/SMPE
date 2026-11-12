@@ -12,10 +12,6 @@ Pour le tri parallèle, plusieurs niveaux de récursion ont été testés :
 THREAD_LEVEL = 0, 1, 2, 4, 6, 8, 10
 ```
 
-Chaque configuration a été exécutée **10 fois** sur des tableaux de 10 000 à 50 millions d'éléments.
-
-Les résultats sont analysés à partir de la **moyenne**, de l'**écart-type** et d'un **intervalle de confiance à 95 % de la moyenne**. L'intervalle de confiance est calculé avec la loi de Student à partir des 10 répétitions. (formule : \(\bar{x} \pm t_{0.975,n-1}\frac{s}{\sqrt{n}}\), ou \(\bar{x}\) est la moyenne, \(s\) l'ecart-type et \(n\) le nombre de repetitions)
-
 ## 2. Fichiers ajoutés
 
 ### Benchmark
