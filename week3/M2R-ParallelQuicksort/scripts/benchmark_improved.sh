@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Nombre de répétitions passé en argument (2 par défaut)
-REPS="${1:-2}"
+REPS="${1:-2}" #sois premier argument sois 2 par defaut
 
-if ! [[ "$REPS" =~ ^[1-9][0-9]*$ ]]; then
+if ! [[ "$REPS" =~ ^[1-9][0-9]*$ ]]; then #verif que largument est un entier pos
     echo "Usage: $0 [nombre_de_repetitions]"
     exit 1
 fi
@@ -15,7 +14,7 @@ SIZES=(10000 100000 500000 1000000 5000000 10000000 20000000 50000000)
 # Niveaux de parallélisme testés
 THREAD_LEVELS=(0 1 2 4 6 8 10)
 
-# Compiler avec optimisations
+# Compiler avec l'optimisation
 make -C src clean
 make -C src WARNINGS="-g -Wall -O2"
 
@@ -29,14 +28,8 @@ echo "repetition,size,thread_level,sequential_sec,parallel_sec,libc_sec" > "$OUT
 echo "Résultats enregistrés dans : $OUT"
 
 for rep in $(seq 1 "$REPS"); do
-    echo "=================================================="
     echo "Répétition $rep/$REPS"
-    echo "=================================================="
-
-    # Mélanger l'ordre des tailles à chaque répétition
     while IFS= read -r size; do
-
-        # Tester chaque niveau de parallélisme
         for thread_level in "${THREAD_LEVELS[@]}"; do
 
             echo "  Taille : $size | THREAD_LEVEL : $thread_level"
@@ -45,8 +38,8 @@ for rep in $(seq 1 "$REPS"); do
 
             seq_time=$(printf '%s\n' "$result" |
                 awk -F': ' '/Sequential quicksort took:/ {
-                    gsub(/ sec\./, "", $2); print $2
-                }')
+                    gsub(/ sec\./, "", $2); print
+                }') #trouve sec. et replace le par rien
 
             par_time=$(printf '%s\n' "$result" |
                 awk -F': ' '/Parallel quicksort took:/ {
@@ -72,7 +65,5 @@ for rep in $(seq 1 "$REPS"); do
     done < <(printf '%s\n' "${SIZES[@]}")
 done
 
-echo "=================================================="
 echo "Benchmark terminé."
 echo "Fichier CSV : $OUT"
-echo "=================================================="
