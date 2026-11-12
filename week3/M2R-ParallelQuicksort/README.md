@@ -25,7 +25,7 @@ Les résultats sont analysés à partir de la **moyenne**, de l'**écart-type** 
 
 ### Analyse statistique
 
-- `scripts/analyse_benchmark.R` : calcule les moyennes, les écarts-types, les intervalles de confiance à 95 %, les speedups et le meilleur `THREAD_LEVEL`.
+- `scripts/analyse_benchmark.R`: calcule les moyennes, les écarts-types, les intervalles de confiance à 95 %, les speedups et le meilleur `THREAD_LEVEL`.
 - `data/benchmark_*.csv` : contient les mesures brutes produites par les benchmarks.
 - `data/analysis/statistiques_thread_level.csv` : contient les statistiques calculées pour chaque taille et chaque `THREAD_LEVEL`.
 - `data/analysis/best_thread_level.csv` : contient le meilleur `THREAD_LEVEL` identifié pour chaque taille.
