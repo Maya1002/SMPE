@@ -14,7 +14,7 @@ THREAD_LEVEL = 0, 1, 2, 4, 6, 8, 10
 
 Chaque configuration a été exécutée **10 fois** sur des tableaux de 10 000 à 50 millions d'éléments.
 
-Les résultats sont analysés à partir de la **moyenne**, de l'**écart-type** et d'un **intervalle de confiance à 95 % de la moyenne**. L'intervalle de confiance est calculé avec la loi de Student à partir des 10 répétitions.
+Les résultats sont analysés à partir de la **moyenne**, de l'**écart-type** et d'un **intervalle de confiance à 95 % de la moyenne**. L'intervalle de confiance est calculé avec la loi de Student à partir des 10 répétitions. (formule : \(\bar{x} \pm t_{0.975,n-1}\frac{s}{\sqrt{n}}\), ou \(\bar{x}\) est la moyenne, \(s\) l'ecart-type et \(n\) le nombre de repetitions)
 
 ## 2. Fichiers ajoutés
 
@@ -25,14 +25,13 @@ Les résultats sont analysés à partir de la **moyenne**, de l'**écart-type** 
 
 ### Analyse statistique
 
-- `scripts/analyse_benchmark.R` : calcule les moyennes, les écarts-types, les intervalles de confiance à 95 %, les speedups et le meilleur `THREAD_LEVEL`.
+- `scripts/analyse_benchmark.R`: calcule les moyennes, les écarts-types, les intervalles de confiance à 95 %, les speedups et le meilleur `THREAD_LEVEL`.
 - `data/benchmark_*.csv` : contient les mesures brutes produites par les benchmarks.
 - `data/analysis/statistiques_thread_level.csv` : contient les statistiques calculées pour chaque taille et chaque `THREAD_LEVEL`.
 - `data/analysis/best_thread_level.csv` : contient le meilleur `THREAD_LEVEL` identifié pour chaque taille.
 
 ### Visualisations
 
-- `data/analysis/execution_times_thread_levels.png` : comparaison des temps d'exécution.
 - `data/analysis/parallel_thread_levels.png` : évolution des performances du tri parallèle selon `THREAD_LEVEL`.
 - `data/analysis/speedup_thread_levels.png` : évolution du speedup selon la taille du tableau et le `THREAD_LEVEL`.
 
@@ -54,19 +53,7 @@ Rscript scripts/analyse_benchmark.R data/benchmark_20261111_180819.csv
 
 Le script calcule les moyennes, les écarts-types, les intervalles de confiance à 95 %, les speedups et le meilleur `THREAD_LEVEL` pour chaque taille.
 
-## 4. Analyse des temps d'exécution
-
-![Temps d'exécution selon THREAD_LEVEL](data/analysis/execution_times_thread_levels.png)
-
-*Figure 1 - Temps d'exécution du tri séquentiel, du tri parallèle et de `qsort`.*
-
-Le temps d'exécution augmente avec la taille du tableau. Pour les petites tailles, le tri parallèle n'a pas vraiment le temps de compenser le coût lié à la création et à la gestion des threads.
-
-Lorsque la taille augmente, le parallélisme devient plus intéressant. Cependant, augmenter THREAD_LEVEL ne donne pas forcément de meilleurs temps. Avec un niveau élevé, davantage de threads sont créés, ce qui peut augmenter le temps consacré à leur gestion.
-
-Il faut donc trouver un niveau de récursion qui apporte suffisamment de parallélisme sans créer trop d'overhead.
-
-## 5. Influence de `THREAD_LEVEL`
+## 4. Influence de `THREAD_LEVEL`
 
 ![Temps du tri parallèle selon THREAD_LEVEL](data/analysis/parallel_thread_levels.png)
 
@@ -89,7 +76,7 @@ Pour 100 000 éléments, THREAD_LEVEL = 0 donne le meilleur résultat parmi les 
 
 Pour les petits tableaux, le travail à effectuer est trop faible pour que la création de plusieurs threads soit intéressante. Pour les grandes tailles, le temps de calcul devient suffisamment important pour compenser ce coût.
 
-## 6. Speedup
+## 5. Speedup
 
 ![Speedup du tri parallèle](data/analysis/speedup_thread_levels.png)
 
@@ -135,7 +122,7 @@ Pour 50 millions d'éléments, le speedup moyen de **1,230** correspond à une a
 
 Globalement, les résultats montrent donc que le parallélisme devient réellement intéressant lorsque la taille du tableau est suffisamment grande pour amortir son coût de gestion.
 
-## 7. Conclusion
+## 6. Conclusion
 
 Les résultats montrent que le tri parallèle n'est pas intéressant pour les petites tailles, mais qu'il devient plus efficace lorsque la taille du tableau augmente.
 
